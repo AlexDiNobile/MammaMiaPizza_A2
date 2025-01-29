@@ -1,0 +1,787 @@
+<html>
+    <head>
+        <title>Mamma Mia's Pizzeria!</title>
+        <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+        <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+        <script src="js/addToppings.js"></script>
+        <script src="js/movePizza.js"></script>
+        <link rel="stylesheet" href="css/user-gesture.css">
+
+        <!--start expereience loader script-->
+        <script>
+            AFRAME.registerComponent('start-experience',{
+                init:function(){
+                    console.log('sence loaded'); 
+                    document.querySelector('#user-gesture-button').style.display='block';
+                }
+            });
+            //will be called when "enter experience" is clicked
+            const startExperience = function(){
+                document.querySelector('#user-gesture-overlay').style.display = 'none';
+                const ambientSounds = document.querySelectorAll('.ambient-music');
+                ambientSounds.forEach(function(soundEntity){
+                    soundEntity.component.sounds.playSounds();
+                })
+            };
+
+        </script>
+    </head>
+    <body>
+
+        <!--Our user gesture html-->
+        <div id="user-gesture-overlay">
+            <div class="center">
+                <button id="user-gesture-button" onclick="startExperience();">Let's Make Some Pizza!</button>
+            </div>
+        </div>
+        <a-scene start-experience>
+            <a-assets>
+                <!--Load all assets here for A-Frame-->
+                <img id="toppingCheese" src="assets/images/toppingCheese.png" crossorigin="anonymous"> <!--Important to make sure everything works add this for audio, video and image files-->
+                
+                <!--A-asset-item is used for non-traditional html assets and respone-type flags that it should be loaded as a binary file-->
+                <audio id="space_music" src="assets/sounds/SpaceMusic.mp3" preload="auto" crossorigin="anonymous"></audio>
+            </a-assets>
+
+            <!--Camera-->
+            <a-entity   id="mainCam"
+                        position="0 2 0"
+                        camera wasd-controls look-controls>
+                            <a-entity   cursor="rayOrigin:mouse" 
+                                        raycaster="far:10; interval:200; objects:.interactive;" >
+                                    <a-entity   id="pizzaBox"
+                                                visible="false"
+                                                position="0 -1 -2.0;"
+                                                geometry="primitive: box; height: 1.5; width: 1.5; depth: 0.15;"
+                                                rotation="90 0 0;"
+                                                material="color: white;">
+                                    </a-entity>
+                            </a-entity>
+            </a-entity>
+            <!--Music-->
+            <a-entity   id="bg_music" 
+                        class="ambient-music"
+                        postion="0 0 0" 
+                        sound="src#space_music; autoplay: true">
+            </a-entity>
+            <!--conveyorBelt-->
+            <a-entity   id="conveyorBelt"
+                position="0 0.097 -4"
+                geometry="primitive:box; width:6; height:1; depth:4"
+                material="color:grey">
+            </a-entity>
+            <!--Oven-->
+            <a-entity   id="oven"
+                position="5 0.097 -2"
+                rotation="0 90 0"
+                geometry="primitive:box; width:8; height:1; depth:4"
+                material="color:grey">
+                <a-entity   class="ovenWall"
+                    position="3.945 0.4 0.0"
+                    rotation="0 0 90"
+                    geometry="primitive:box; width:2; height:0.1; depth:4"
+                    material="color:grey">
+                </a-entity>
+                <a-entity   class="ovenWall"
+                    position="2 0.4 2"
+                    rotation="0 90 90"
+                    geometry="primitive:box; width:2; height:0.1; depth:4"
+                    material="color:grey">
+                </a-entity>
+                <a-entity   id="ovenTop"
+                    position="2.0 1.6 0"
+                    rotation="0 90 0"
+                    geometry="primitive:box; width:4; height:0.5; depth:4"
+                    material="color:grey">
+                </a-entity>
+                <a-entity   class="ovenCorner"
+                    position="0.1 -0.16 -1.9"
+                    rotation="90 0 0"
+                    geometry="primitive:box; width:0.2; height:0.2; depth:4"
+                    material="color:grey">
+                </a-entity>
+            </a-entity>
+            <!--Pizza Table-->
+            <a-entity   id="pizzaTable"
+                        position="-5 0.5 -4"
+                        rotation="90 0 0"
+                        geometry="primitive:box; width:3.2; height:3.2; depth:0.2"
+                        material="color:rgb(60,36,16)">
+                        <!--Chair Legs-->
+                        <a-entity
+                            position="-1.4 1.4 0.45"
+                            geometry="primitive:box; width:0.2; height:0.2; depth:1"
+                            material="color:rgb(60,36,16)">
+                        </a-entity>
+                        <a-entity
+                            position="1.4 1.4 0.45"
+                            geometry="primitive:box; width:0.2; height:0.2; depth:1"
+                            material="color:rgb(60,36,16)">
+                        </a-entity>
+                        <a-entity
+                            position="1.4 -1.4 0.45"
+                            geometry="primitive:box; width:0.2; height:0.2; depth:1"
+                            material="color:rgb(60,36,16)">
+                        </a-entity>
+                        <a-entity
+                            position="-1.4 -1.4 0.45"
+                            geometry="primitive:box; width:0.2; height:0.2; depth:1"
+                            material="color:rgb(60,36,16)">
+                    </a-entity>
+            </a-entity>
+            <!--Menu Panel-->
+            <a-entity   id="toppingsPanel"
+                        position="-5 3.5 -7"
+                        rotation="90 0 0"
+                        geometry="primitive:box; width: 4; height: 0.2; depth:4"
+                        material="color:white">
+                <a-entity   id="addSauceButton"
+                        position="-1.5 0 -1.5">
+                    <a-entity class="button interactive" 
+                            onclick="addSauce();"
+                            position="0 0.6 0"
+                            geometry="primitive:cylinder; radius:0.15; height:0.2;"
+                            material="color:rgb(255,100,100);"
+                            animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                            animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                            animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
+                            animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                    </a-entity>
+                    <a-entity   class="pedestal" 
+                            position="0 0.3 0" 
+                            geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                            material="color:white;">
+                    </a-entity>
+                    <a-entity
+                        id="sauceMenu"
+                        position="0 0.115 0.7"
+                        geometry="primitive: sphere; radius: 0.2"
+                        material="color:brown">
+                    </a-entity>
+                    <a-text
+                            rotation="270 0 0"
+                            position="0.35 0.115 1.1"
+                            text="value:Sauce; color:black; font:roboto; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                    </a-text>  
+                </a-entity>
+                <a-entity   id="addCheeseButton"
+                            position="-0.5 0 -1.5">
+                    <a-entity   class="button interactive" 
+                            onclick="addCheese();"
+                            position="0 0.6 0" 
+                            geometry="primitive:cylinder; radius:0.15; height:0.2;"
+                            material="color:rgb(255,100,100);"
+                            animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                            animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                            animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
+                            animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                    </a-entity>
+                    <a-entity   class="pedestal" 
+                            position="0 0.3 0" 
+                            geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                            material="color:white;">
+                    </a-entity>
+                    <a-entity
+                        id="cheeseMenu"
+                        position="0 0.115 0.7"
+                        geometry="primitive: sphere; radius: 0.2"
+                        material="color:rgb(248, 230, 159)">
+                    </a-entity> 
+                    <a-text
+                        rotation="270 0 0"
+                        position="0.33 0.115 1.1"
+                        text="value:Cheese; color:black; font:roboto; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                    </a-text>   
+                </a-entity>
+                <a-entity   id="addPepperoniButton"
+                            position="0.5 0 -1.5">
+                    <a-entity class="button interactive" 
+                            onclick="addPepperoni();"
+                            position="0 0.6 0" 
+                            geometry="primitive:cylinder; radius:0.15; height:0.2;"
+                            material="color:rgb(255,100,100);"
+                            animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                            animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                            animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
+                            animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                    </a-entity>
+                    <a-entity   class="pedestal" 
+                            position="0 0.3 0" 
+                            geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                            material="color:white;">
+                    </a-entity>
+                    <a-entity
+                            id="pepperoniToppingMenu"
+                            position="0 0.115 0.7"
+                            geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
+                            material="color:rgb(127,50,34)">
+                    </a-entity>
+                    <a-text
+                        rotation="270 0 0"
+                        position="0.235 0.115 1.1"
+                        text="value:Pepperoni; color:black; font:roboto; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                    </a-text>  
+                </a-entity>
+                <a-entity   id="addOlivesButton"
+                            position="1.5 0 -1.5">
+                    <a-entity   class="button interactive" 
+                            onclick="addOlives();"
+                            position="0 0.6 0" 
+                            geometry="primitive:cylinder; radius:0.15; height:0.2;"
+                            material="color:rgb(255,100,100);"
+                            animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                            animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                            animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
+                            animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                    </a-entity>
+                    <a-entity   class="pedestal" 
+                            position="0 0.3 0" 
+                            geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                            material="color:white;">
+                    </a-entity>
+                    <a-entity
+                        id="olivesToppingMenu"
+                        position="0 0.115 0.7"
+                        rotation="90 0 0"
+                        geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                        material="color:black">
+                    </a-entity>
+                    <a-text
+                        rotation="270 0 0"
+                        position="0.4 0.115 1.1"
+                        text="value:Olives; color:black; font:roboto; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                    </a-text>   
+                </a-entity>
+                <a-entity   id="addHamButton"
+                        position="-1.5 0 0.25">
+                    <a-entity class="button interactive" 
+                            onclick="addHam();"
+                            position="0 0.6 0" 
+                            geometry="primitive:cylinder; radius:0.15; height:0.2;"
+                            material="color:rgb(255,100,100);"
+                            animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                            animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                            animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
+                            animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                    </a-entity>
+                    <a-entity   class="pedestal" 
+                            position="0 0.3 0" 
+                            geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                            material="color:white;">
+                    </a-entity>
+                    <a-entity
+                        id="hamToppingMenu"
+                        position="0 0.115 0.7"
+                        rotation="-90 42 0"
+                        geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                        material="color:rgb(255,156,156)">
+                    </a-entity>
+                    <a-text
+                        rotation="270 0 0"
+                        position="0.423 0.115 1.1"
+                        text="value:Ham; color:black; font:roboto; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                    </a-text>   
+                </a-entity>
+                <a-entity   id="addPeppersButton"
+                            position="-0.5 0 0.25">
+                    <a-entity   class="button interactive" 
+                            onclick="addPepper();"
+                            position="0 0.6 0" 
+                            geometry="primitive:cylinder; radius:0.15; height:0.2;"
+                            material="color:rgb(255,100,100);"
+                            animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                            animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                            animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
+                            animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                    </a-entity>
+                    <a-entity   class="pedestal" 
+                            position="0 0.3 0" 
+                            geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                            material="color:white;">
+                    </a-entity>
+                    <a-entity
+                        id="pepperToppingMenu"
+                        position="-0.15 0.110 0.8"
+                        rotation="-90 0 0"
+                        geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
+                        material="color:rgb(137,180,63)">
+                    </a-entity> 
+                    <a-text
+                        rotation="270 0 0"
+                        position="0.277 0.115 1.1"
+                        text="value:Peppers; color:black; font:roboto; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                    </a-text>    
+                </a-entity>
+                <a-entity   id="addMeatButton"
+                            position="0.5 0 0.25" >
+                    <a-entity   class="button interactive" 
+                            onclick="addMeat();"
+                            position="0 0.6 0"
+                            geometry="primitive:cylinder; radius:0.15; height:0.2;"
+                            material="color:rgb(255,100,100);"
+                            animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                            animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                            animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
+                            animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                    </a-entity>
+                    <a-entity   class="pedestal" 
+                            position="0 0.3 0" 
+                            geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                            material="color:white;">
+                    </a-entity>
+                    <a-entity
+                        id="meatToppingMenu"
+                        position="0 0.115 0.7"
+                        rotation="-90 0 0"
+                        geometry="primitive: sphere; radius: 0.1"
+                        material="color:rgb(100,30,24)">
+                    </a-entity>
+                    <a-text
+                        rotation="270 0 0"
+                        position="0.285 0.115 1.1"
+                        text="value:Meatball; color:black; font:roboto; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                    </a-text>    
+                </a-entity>
+                <a-entity   id="newPizzaButton"
+                        position="1.5 0 0.25"
+                        visible="false">
+                <a-entity class="button interactive" 
+                        onclick="makeNewPizza();"
+                        position="0 0.6 0"
+                        geometry="primitive:cylinder; radius:0.15; height:0.2;"
+                        material="color:rgb(255,100,100);"
+                        animation__mouseenter="property:material.color; type:color; to:rgb(255,0,0); startEvents:mouseenter; dur:200;"
+                        animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
+                        animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
+                        animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                </a-entity>
+                <a-entity   id="pizzaBaseMenu"
+                    geometry="primitive:cylinder; height: 0.2; radius: 0.2;"
+                    material="color:rgb(244,217,196)"
+                    position="0 0.019 0.7">
+                </a-entity>
+            <!--Crust-->
+                <a-entity
+                    geometry="primitive: torus; radius: 0.2; radiusTubular: 0.01; arc: 360;"
+                    material="color:rgb(206,174,149)"
+                    position="0 0.115 0.7"
+                    rotation="90 0 0">
+                </a-entity>
+                <a-text
+                    rotation="270 0 0"
+                    position="0.15 0.115 1.1"
+                    text="value:New Pizza; color:black; font:roboto; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                </a-text>  
+                <a-entity   class="pedestal" 
+                    position="0 0.3 0" 
+                    geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                    material="color:white;">
+                </a-entity>
+                
+    </a-entity>
+            </a-entity>
+            <!--Delivery Window-->
+            <a-entity   id="deliveryWindow"
+                        position="0 0.5 8"
+                        geometry="primitive:box; width:3.2; height:1; depth:3.2"
+                        material="color:grey"
+                        onclick="pizzaDeliver();"
+                        class="button interactive">
+            </a-entity>
+            <!--Pizza-->
+            <a-entity
+                        id="pizza"
+                        visible="true">
+                <a-entity   id="pizzaBase"
+                            onclick="pizzaHold(), logIt(pizza);"
+                            class="button interactive"
+                            position="-5 0.6 -4"
+                            geometry="primitive:cylinder; height: 0.2; radius: 1.4;"
+                            material="color:rgb(244,217,196)">
+                        <!--Crust-->
+                        <a-entity
+                            position="0 0.095 0"
+                            rotation="90 0 0"
+                            geometry="primitive: torus; radius: 1.4; radiusTubular: 0.05; arc: 360;"
+                            material="color:rgb(206,174,149)">
+                        </a-entity>
+                        <!--Toppings-->
+                        <!--Sauce-->
+                        <a-entity
+                            id="sauceTopping"
+                            position="0 0.095 0"
+                            geometry="primitive: cylinder; height: 0.02; radius: 1.4;"
+                            material="color:brown"
+                            visible="false">
+                        </a-entity>
+                        <!--Cheese-->
+                        <a-image
+                            id="cheeseTopping"
+                            position="-0.04 0.107 0"
+                            rotation="-90 0 0"
+                            geometry="primitive: plane; height: 2.9; width: 2.9;"
+                            material="src:#toppingCheese"
+                            visible="false">
+                        </a-image>
+                        <!--Pepperoni (7)-->
+                        <a-entity
+                            class="pepperoniTopping"
+                            position="-1.01 0.107 -0.163"
+                            geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
+                            material="color:rgb(127,50,34)"
+                            visible="false">
+                        </a-entity>
+                        <a-entity
+                            class="pepperoniTopping"
+                            position="-0.65 0.107 0.592"
+                            geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
+                            material="color:rgb(127,50,34)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperoniTopping"
+                            position="-0.022 0.107 -0.857"
+                            geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
+                            material="color:rgb(127,50,34)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperoniTopping"
+                            position="-0.02 0.107 0.113"
+                            geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
+                            material="color:rgb(127,50,34)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperoniTopping"
+                            position="-0.04 0.107 0.971"
+                            geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
+                            material="color:rgb(127,50,34)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperoniTopping"
+                            position="0.791 0.107 0.613"
+                            geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
+                            material="color:rgb(127,50,34)"
+                            visible="false">
+                        </a-entity> 
+                        <a-entity
+                            class="pepperoniTopping"
+                            position="0.744 0.107 -0.402"
+                            geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
+                            material="color:rgb(127,50,34)"
+                            visible="false">
+                        </a-entity>  
+                        <!--Olives (10)--> 
+                        <a-entity
+                            class="olivesTopping"
+                            position="-1.02945 0.11 0.28143"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="-0.68354 0.11 0"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="-0.50941 0.11 0.94399"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="-0.50989 0.11 -0.9678"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="-0.16028 0.11 -0.33953"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="0.26303 0.11 0.58595"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="0.42236 0.11 -0.8713"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="0.47375 0.11 0.99769"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="0.53271 0.11 0.11139"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="olivesTopping"
+                            position="1.13304 0.11 0"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
+                            material="color:black"
+                            visible="false">
+                        </a-entity>  
+                        <!--Ham (9)--> 
+                        <a-entity
+                            class="hamTopping"
+                            position="-0.97997 0.107 0.64601"
+                            rotation="-90 42 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="hamTopping"
+                            position="-0.72304 0.107 -0.56679"
+                            rotation="-90 -36 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="hamTopping"
+                            position="-0.41648 0.107 -0.13517"
+                            rotation="-90 -28 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="hamTopping"
+                            position="-0.22313 0.107 0.57434"
+                            rotation="-90 -40 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="hamTopping"
+                            position="0.28265 0.107 -0.46324"
+                            rotation="-90 -31 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="hamTopping"
+                            position="0.45768 0.107 0.39907"
+                            rotation="-90 37 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="hamTopping"
+                            position="0.83255 0.107 -0.77611"
+                            rotation="-90 70 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity>
+                        <a-entity
+                            class="hamTopping"
+                            position="0.8264 0.107 0.09179"
+                            rotation="-90 -72 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity> 
+                        <a-entity
+                            class="hamTopping"
+                            position="0.28471 0.107 0.98726"
+                            rotation="-90 -19 0"
+                            geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
+                            material="color:rgb(255,156,156)"
+                            visible="false">
+                        </a-entity> 
+                        <!--Green Peppers (7)-->  
+                        <a-entity
+                            class="pepperTopping"
+                            position="-0.46872 0.107 0.80177"
+                            rotation="-90 -150 0"
+                            geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
+                            material="color:rgb(137,180,63)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperTopping"
+                            position="-0.09056 0.107 0.36015"
+                            rotation="-90 124 0"
+                            geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
+                            material="color:rgb(137,180,63)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperTopping"
+                            position="-0.70519 0.107 -0.54679"
+                            rotation="-90 0 0"
+                            geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
+                            material="color:rgb(137,180,63)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperTopping"
+                            position="0.52376 0.107 -0.76726"
+                            rotation="-90 76 0"
+                            geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
+                            material="color:rgb(137,180,63)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperTopping"
+                            position="0.72035 0.107 0.00476"
+                            rotation="-90 -72 0"
+                            geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
+                            material="color:rgb(137,180,63)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperTopping"
+                            position="0.34572 0.107 0.51739"
+                            rotation="-90 160 0"
+                            geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
+                            material="color:rgb(137,180,63)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="pepperTopping"
+                            position="0.14652 0.107 -0.44413"
+                            rotation="-90 -98 0"
+                            geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
+                            material="color:rgb(137,180,63)"
+                            visible="false">
+                        </a-entity>  
+                        <!--Meat (10)--> 
+                        <a-entity
+                            class="meatTopping"
+                            position="-1.02945 0.11 -0.55591"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="meatTopping"
+                            position="-0.77295 0.11 0.281"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="meatTopping"
+                            position="-0.24236 0.11 1.18541"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity> 
+                        <a-entity
+                            class="meatTopping"
+                            position="-0.24081 0.11 0.35322"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity> 
+                        <a-entity
+                            class="meatTopping"
+                            position="-0.28752 0.11 -1.09748"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="meatTopping"
+                            position="-0.01172 0.11 -0.43775"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="meatTopping"
+                            position="0.28883 0.11 0.14704"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="meatTopping"
+                            position="1.12893 0.11 0.28143"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="meatTopping"
+                            position="0.62909 0.11 0.91586"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity>  
+                        <a-entity
+                            class="meatTopping"
+                            position="1.05747 0.11 -0.4283"
+                            rotation="-90 0 0"
+                            geometry="primitive: sphere; radius: 0.05"
+                            material="color:rgb(100,30,24)"
+                            visible="false">
+                        </a-entity>  
+                </a-entity>
+            </a-entity>
+
+            <a-entity   id="room;">
+                <a-entity class="room" position="0 0.01 0" rotation="-90 0 0" geometry="primitive:plane; width:14; height:14;" material="color:rgb(222,222,222);"></a-entity>
+                    <a-entity id="walls">
+                        <a-entity class="wall" position="15 8 0" rotation="0 -90 0" geometry="primitive:plane; width:30; height:3;" material="color:white;"></a-entity>
+                        <a-entity class="wall" position="-15 8 0" rotation="0 90 0" geometry="primitive:plane; width:30; height:3;" material="color:white;"></a-entity>
+                        <a-entity class="wall" position="0 8 15" rotation="0 180 0" geometry="primitive:plane; width:30; height:3;" material="color:white;"></a-entity>
+                        <a-entity class="wall" position="0 8 -15" rotation="0 0 0" geometry="primitive:plane; width:30; height:3;" material="color:white;""></a-entity>
+                    </a-entity>
+                </a-entity>
+            
+            </a-entity>
+            <a-entity   environment="preset:default;">
+            </a-entity>
+
+        </a-scene>
+    </body>
+</html>
