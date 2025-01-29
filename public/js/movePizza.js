@@ -4,6 +4,9 @@ function pizzaHold(){
     pizza.setAttribute('position', "0 100 0");
     let pizzaBox = document.querySelector('#pizzaBox');
     pizzaBox.setAttribute('visible', true);
+
+    let pizzaDevliver = document.querySelector('#deliveryWindow');
+    pizzaDevliver.setAttribute('position', "0 -1.8 0");
 }
 function pizzaDeliver(){
     let newPizzaButton = document.querySelector('#newPizzaButton');
@@ -12,6 +15,9 @@ function pizzaDeliver(){
 
     let pizzaBox = document.querySelector('#pizzaBox');
     pizzaBox.setAttribute('visible', false);
+
+    let pizzaDevliver = document.querySelector('#deliveryWindow');
+    pizzaDevliver.setAttribute('position', "0 100 0");
 }
 function makeNewPizza(){
     let pizza = document.querySelector('#pizza');
@@ -52,6 +58,10 @@ function makeNewPizza(){
     for (var i = 0; i < meat.length; i++) {
         meat[i].setAttribute('visible', false);
     }
+}
+
+function pizzaAnimation(){
+
 }
 
 //function pizzaHold(){

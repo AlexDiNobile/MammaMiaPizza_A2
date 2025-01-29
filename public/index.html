@@ -75,30 +75,48 @@
                 position="5 0.097 -2"
                 rotation="0 90 0"
                 geometry="primitive:box; width:8; height:1; depth:4"
-                material="color:grey">
+                material="color:grey; roughness: 0.8; metalness: 0.7;">
                 <a-entity   class="ovenWall"
                     position="3.945 0.4 0.0"
                     rotation="0 0 90"
                     geometry="primitive:box; width:2; height:0.1; depth:4"
-                    material="color:grey">
+                    material="color:grey; roughness: 0.8; metalness: 0.7;">
                 </a-entity>
                 <a-entity   class="ovenWall"
                     position="2 0.4 2"
                     rotation="0 90 90"
                     geometry="primitive:box; width:2; height:0.1; depth:4"
-                    material="color:grey">
+                    material="color:grey; roughness: 0.8; metalness: 0.7;">
                 </a-entity>
                 <a-entity   id="ovenTop"
                     position="2.0 1.6 0"
                     rotation="0 90 0"
                     geometry="primitive:box; width:4; height:0.5; depth:4"
-                    material="color:grey">
+                    material="color:grey; roughness: 0.8; metalness: 0.7;">
                 </a-entity>
                 <a-entity   class="ovenCorner"
                     position="0.1 -0.16 -1.9"
                     rotation="90 0 0"
                     geometry="primitive:box; width:0.2; height:0.2; depth:4"
-                    material="color:grey">
+                    material="color:grey; roughness: 0.8; metalness: 0.7;">
+                </a-entity>
+                <a-entity   class="ovenHeater"
+                    position="2.0 1.4 -1"
+                    rotation="0 0 90"
+                    geometry="primitive: cylinder; height: 3; radius: 0.2"
+                    material="emissive:orange; emissiveIntensity: 1;">
+                </a-entity>
+                <a-entity   class="ovenHeater"
+                    position="2.0 1.4 0"
+                    rotation="0 0 90"
+                    geometry="primitive: cylinder; height: 3; radius: 0.2"
+                    material="emissive:orange; emissiveIntensity: 1;">
+                </a-entity>
+                <a-entity   class="ovenHeater"
+                    position="2.0 1.4 1"
+                    rotation="0 0 90"
+                    geometry="primitive: cylinder; height: 3; radius: 0.2"
+                    material="emissive:orange; emissiveIntensity: 1;">
                 </a-entity>
             </a-entity>
             <!--Pizza Table-->
@@ -379,14 +397,6 @@
                 </a-entity>
                 
     </a-entity>
-            </a-entity>
-            <!--Delivery Window-->
-            <a-entity   id="deliveryWindow"
-                        position="0 0.5 8"
-                        geometry="primitive:box; width:3.2; height:1; depth:3.2"
-                        material="color:grey"
-                        onclick="pizzaDeliver();"
-                        class="button interactive">
             </a-entity>
             <!--Pizza-->
             <a-entity
@@ -767,19 +777,75 @@
                         </a-entity>  
                 </a-entity>
             </a-entity>
-
+            <!--Room-->
             <a-entity   id="room;">
-                <a-entity class="room" position="0 0.01 0" rotation="-90 0 0" geometry="primitive:plane; width:14; height:14;" material="color:rgb(222,222,222);"></a-entity>
-                    <a-entity id="walls">
-                        <a-entity class="wall" position="15 8 0" rotation="0 -90 0" geometry="primitive:plane; width:30; height:3;" material="color:white;"></a-entity>
-                        <a-entity class="wall" position="-15 8 0" rotation="0 90 0" geometry="primitive:plane; width:30; height:3;" material="color:white;"></a-entity>
-                        <a-entity class="wall" position="0 8 15" rotation="0 180 0" geometry="primitive:plane; width:30; height:3;" material="color:white;"></a-entity>
-                        <a-entity class="wall" position="0 8 -15" rotation="0 0 0" geometry="primitive:plane; width:30; height:3;" material="color:white;""></a-entity>
+                <a-entity   id="floor" 
+                            position="0 9 0" 
+                            rotation="-270 0 0" 
+                            geometry="primitive:plane; width:14; height:14;" 
+                            material="color:rgb(222,222,222);">
+                </a-entity>
+                <a-entity   id="floor" 
+                            position="0 0.01 0" 
+                            rotation="-90 0 0" 
+                            geometry="primitive:plane; width:14; height:14;" 
+                            material="color:rgb(222,222,222);">
+                </a-entity>
+                <a-entity id="walls">
+                    <a-entity   class="wall" 
+                                position="7 4 0" 
+                                rotation="0 -90 0" 
+                                geometry="primitive:plane; width:14; height:10;" 
+                                material="color:white;">
+                    </a-entity>
+                    <a-entity   class="wall" 
+                                position="-7 4 0" 
+                                rotation="0 90 0" 
+                                geometry="primitive:plane; width:14; height:10;" 
+                                material="color:white;">
+                    </a-entity>
+                    <a-entity   class="wall" 
+                                position="0 4 -7" 
+                                rotation="0 0 0" 
+                                geometry="primitive:plane; width:14; height:10;" 
+                                material="color:white;">
+                    </a-entity>
+                    <a-entity   id="deliveryWall" 
+                                position="0 4 7">
+                        <a-entity   id="wall" 
+                                    position="4.5 0 0"
+                                    geometry="primitive: box; height: 10; width: 5; depth: 0.15;" 
+                                    material="color:white;">
+                        </a-entity>
+                        <a-entity   id="wall" 
+                                    position="-4.5 0 0"
+                                    geometry="primitive: box; height: 10; width: 5; depth: 0.15;" 
+                                    material="color:white;">
+                        </a-entity>
+                        <a-entity   id="wall" 
+                                    position="0 3 0"
+                                    geometry="primitive: box; height: 7; width: 5; depth: 0.15;" 
+                                    material="color:white;">
+                        </a-entity>
+                        <a-entity   id="wall" 
+                                    position="0 -4 0"
+                                    geometry="primitive: box; height: 2; width: 5; depth: 0.15;" 
+                                    material="color:white;">
+                        </a-entity>
+                        <!--Delivery Window-->
+                        <a-entity   id="deliveryWindow"
+                                    position="0 100 0"
+                                    geometry="primitive:box; width:4.2; height:3; depth:0.2"
+                                    material="color:grey"
+                                    onclick="pizzaDeliver();"
+                                    class="button interactive"
+                                    visible="false">
+                        </a-entity>
                     </a-entity>
                 </a-entity>
-            
             </a-entity>
-            <a-entity   environment="preset:default;">
+            
+            <a-entity   environment="preset:default; dressing:towers; dressingAmount: 22; dressingScale: 70; dressingUniformScale: false; dressingColor: grey; groundTexture: walkernoise; dressingVariance: 30 170 30; groundDensity: 64;">
             </a-entity>
 
         </a-scene>
