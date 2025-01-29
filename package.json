@@ -11,5 +11,13 @@
     "express": "^4.21.2"
   },
   "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexDiNobile/MammaMiaPizza_A2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AlexDiNobile/MammaMiaPizza_A2/issues"
+  },
+  "homepage": "https://github.com/AlexDiNobile/MammaMiaPizza_A2#readme",
   "description": ""
 }
