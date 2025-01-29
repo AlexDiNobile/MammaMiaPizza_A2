@@ -4,6 +4,8 @@ function pizzaHold(){
     pizza.setAttribute('position', "0 100 0");
     let pizzaBox = document.querySelector('#pizzaBox');
     pizzaBox.setAttribute('visible', true);
+    let deliveryWindow = document.querySelector('#deliveryWindow');
+    deliveryWindow.setAttribute('position',"0 -1.8 0");
 }
 function pizzaDeliver(){
     let newPizzaButton = document.querySelector('#newPizzaButton');
@@ -12,6 +14,9 @@ function pizzaDeliver(){
 
     let pizzaBox = document.querySelector('#pizzaBox');
     pizzaBox.setAttribute('visible', false);
+
+    let deliveryWindow = document.querySelector('#deliveryWindow');
+    deliveryWindow.setAttribute('position',"0 100 0");
 }
 function makeNewPizza(){
     let pizza = document.querySelector('#pizza');
