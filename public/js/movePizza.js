@@ -9,6 +9,11 @@ function pizzaHold(){
         pizzabase.setAttribute("animation", "property: material.color; type:color; to:rgb(183,163,147); delay:2000; dur: 2000; easing: linear;")
         console.log(pizza.getAttribute('position').x);
         let pizzaSizzle = document.querySelector('#cookingSound');
+
+        let toppingPanel = document.querySelector('#toppingsPanel');
+        toppingPanel.setAttribute('visible', false);
+        toppingPanel.setAttribute('position', "-5 3.5 100");
+
         setTimeout(function() {
             pizzaSizzle.play();
           }, 2000);
@@ -42,6 +47,10 @@ function pizzaDeliver(){
     let pizzaBox = document.querySelector('#pizzaBox');
     pizzaBox.setAttribute('visible', false);
 
+
+    let toppingPanel = document.querySelector('#toppingsPanel');
+    toppingPanel.setAttribute('visible', true);
+    toppingPanel.setAttribute('position', "-5 3.5 -7");
 
     let pizzaDeliver = document.querySelector('#deliveryWindow');
     pizzaDeliver.setAttribute('position', "0 100 0");
