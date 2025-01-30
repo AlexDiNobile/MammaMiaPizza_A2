@@ -1,15 +1,35 @@
 function pizzaHold(){
-    let pizza = document.querySelector('#pizza');
-    pizza.setAttribute('visible', false);
-    pizza.setAttribute('position', "0 100 0");
-    let pizzaBox = document.querySelector('#pizzaBox');
-    pizzaBox.setAttribute('visible', true);
+    if(pizza.getAttribute('position') != "10 0 0"){
+        let pizza = document.querySelector('#pizza');
+        pizza.setAttribute("animation", "property: position; to: 10 0 0; dur: 2000; easing: linear;")
 
-
-    let pizzaDevliver = document.querySelector('#deliveryWindow');
-    pizzaDevliver.setAttribute('position', "0 -1.8 0");
+        let pizzacrust = document.querySelector('#crust');
+        pizzacrust.setAttribute("animation", "property:material.color; type:color; to:rgb(166,140,121); delay:2000; dur: 2000; easing: linear;")
+        let pizzabase = document.querySelector('#pizzaBase');
+        pizzabase.setAttribute("animation", "property: material.color; type:color; to:rgb(183,163,147); delay:2000; dur: 2000; easing: linear;")
+        console.log(pizza.getAttribute('position').x);
+    }
+    if(pizza.getAttribute('position').x === 10){
+        pizza.setAttribute("animation", "property: position; to: 10 0 4; dur: 2000; easing: linear;")
+        console.log("The Pizza is here");
+    }
+    if(pizza.getAttribute('position').z === 4){
+        pizza.setAttribute("animation", "property: position; to: 10 0 4; dur: 2000; easing: linear;")
+        console.log("The Pizza is here2");
+        pizza.setAttribute('visible', false);
+        pizza.setAttribute('position', "0 100 0");
+        let pizzaBox = document.querySelector('#pizzaBox');
+        pizzaBox.setAttribute('visible', true);
+    
+    
+        let pizzaDevliver = document.querySelector('#deliveryWindow');
+        pizzaDevliver.setAttribute('position', "0 -1.8 0");
+    }
 
 }
+
+
+
 function pizzaDeliver(){
     let newPizzaButton = document.querySelector('#newPizzaButton');
     newPizzaButton.setAttribute('visible', true);
@@ -19,8 +39,13 @@ function pizzaDeliver(){
     pizzaBox.setAttribute('visible', false);
 
 
-    let pizzaDevliver = document.querySelector('#deliveryWindow');
-    pizzaDevliver.setAttribute('position', "0 100 0");
+    let pizzaDeliver = document.querySelector('#deliveryWindow');
+    pizzaDeliver.setAttribute('position', "0 100 0");
+
+    let pizzacrust = document.querySelector('#crust');
+    pizzacrust.setAttribute("animation", "property: material.color; type:color; to:rgb(206,174,149); dur: 0; easing: linear;")
+    let pizzabase = document.querySelector('#pizzaBase');
+    pizzabase.setAttribute("animation", "property: material.color; type:color; to:rgb(244,217,196); dur: 0; easing: linear;")
 
 }
 function makeNewPizza(){
@@ -62,10 +87,6 @@ function makeNewPizza(){
     for (var i = 0; i < meat.length; i++) {
         meat[i].setAttribute('visible', false);
     }
-}
-
-function pizzaAnimation(){
-
 }
 
 //function pizzaHold(){
