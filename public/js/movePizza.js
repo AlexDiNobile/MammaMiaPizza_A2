@@ -1,5 +1,5 @@
 function pizzaHold(){
-    if(pizza.getAttribute('position') != "10 0 0"){
+    if(pizza.getAttribute('position').x === 0){
         let pizza = document.querySelector('#pizza');
         pizza.setAttribute("animation", "property: position; to: 10 0 0; dur: 2000; easing: linear;")
 
@@ -8,6 +8,10 @@ function pizzaHold(){
         let pizzabase = document.querySelector('#pizzaBase');
         pizzabase.setAttribute("animation", "property: material.color; type:color; to:rgb(183,163,147); delay:2000; dur: 2000; easing: linear;")
         console.log(pizza.getAttribute('position').x);
+        let pizzaSizzle = document.querySelector('#cookingSound');
+        setTimeout(function() {
+            pizzaSizzle.play();
+          }, 2000);
     }
     if(pizza.getAttribute('position').x === 10){
         pizza.setAttribute("animation", "property: position; to: 10 0 4; dur: 2000; easing: linear;")
