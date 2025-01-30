@@ -39,6 +39,10 @@
                 <!--Load all assets here for A-Frame-->
                 <img id="toppingCheese" src="assets/images/toppingCheese.png" crossorigin="anonymous"> <!--Important to make sure everything works add this for audio, video and image files-->
                 
+                <img id="woodTexture" src="assets/images/woodTexture.png" crossorigin="anonymous">
+
+                <img id="brickTexture" src="assets/images/brickTexture.png" crossorigin="anonymous">
+                
                 <!--A-asset-item is used for non-traditional html assets and respone-type flags that it should be loaded as a binary file-->
                 <audio id="space_music" src="assets/sounds/SpaceMusic.mp3" preload="auto" crossorigin="anonymous"></audio>
             </a-assets>
@@ -780,58 +784,58 @@
             </a-entity>
             <!--Room-->
             <a-entity   id="room;">
-                <a-entity   id="floor" 
+                <a-entity   id="ceiling" 
                             position="0 9 0" 
                             rotation="-270 0 0" 
                             geometry="primitive:plane; width:14; height:14;" 
-                            material="color:rgb(222,222,222);">
+                            material="src:#woodTexture;">
                 </a-entity>
                 <a-entity   id="floor" 
                             position="0 0.01 0" 
                             rotation="-90 0 0" 
                             geometry="primitive:plane; width:14; height:14;" 
-                            material="color:rgb(222,222,222);">
+                            material="src:#woodTexture;">
                 </a-entity>
                 <a-entity id="walls">
                     <a-entity   class="wall" 
                                 position="7 4 0" 
                                 rotation="0 -90 0" 
                                 geometry="primitive:plane; width:14; height:10;" 
-                                material="color:white;">
+                                material="src:#brickTexture;">
                     </a-entity>
                     <a-entity   class="wall" 
                                 position="-7 4 0" 
                                 rotation="0 90 0" 
                                 geometry="primitive:plane; width:14; height:10;" 
-                                material="color:white;">
+                                material="src:#brickTexture;">
                     </a-entity>
                     <a-entity   class="wall" 
                                 position="0 4 -7" 
                                 rotation="0 0 0" 
                                 geometry="primitive:plane; width:14; height:10;" 
-                                material="color:white;">
+                                material="src:#brickTexture;">
                     </a-entity>
                     <a-entity   id="deliveryWall" 
                                 position="0 4 7">
                         <a-entity   id="wall" 
                                     position="4.5 0 0"
                                     geometry="primitive: box; height: 10; width: 5; depth: 0.15;" 
-                                    material="color:white;">
+                                    material="color:rgb(132, 34, 34);">
                         </a-entity>
                         <a-entity   id="wall" 
                                     position="-4.5 0 0"
                                     geometry="primitive: box; height: 10; width: 5; depth: 0.15;" 
-                                    material="color:white;">
+                                    material="color:rgb(132, 34, 34);">
                         </a-entity>
                         <a-entity   id="wall" 
                                     position="0 3 0"
                                     geometry="primitive: box; height: 7; width: 5; depth: 0.15;" 
-                                    material="color:white;">
+                                    material="color:rgb(132, 34, 34);">
                         </a-entity>
                         <a-entity   id="wall" 
                                     position="0 -4 0"
                                     geometry="primitive: box; height: 2; width: 5; depth: 0.15;" 
-                                    material="color:white;">
+                                    material="color:rgb(132, 34, 34);">
                         </a-entity>
                         <!--Delivery Window-->
                         <a-entity   id="deliveryWindow"
