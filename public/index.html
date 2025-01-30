@@ -52,6 +52,7 @@
                 <audio id="chillMusic" src="assets/sounds/chillMusic.mp3" preload="auto" crossorigin="anonymous"></audio>
                 <audio id="bellRing" src="assets/sounds/bellRing.mp3" preload="auto" crossorigin="anonymous"></audio>
                 <audio id="cookingSound" src="assets/sounds/cookingSound.mp3" preload="auto" crossorigin="anonymous"></audio>
+                <audio id="plopSound" src="assets/sounds/plopSound.mp3" preload="auto" crossorigin="anonymous"></audio>
             </a-assets>
 
             <!--Camera-->
@@ -169,6 +170,7 @@
                 <a-entity   id="addSauceButton"
                         position="-1.5 0 -1.5">
                     <a-entity class="button interactive" 
+                            sound="src:#plopSound; on: click; volume: 3"
                             onclick="addSauce();"
                             position="0 0.6 0"
                             geometry="primitive:cylinder; radius:0.15; height:0.2;"
@@ -198,6 +200,7 @@
                 <a-entity   id="addCheeseButton"
                             position="-0.5 0 -1.5">
                     <a-entity   class="button interactive" 
+                            sound="src:#plopSound; on: click; volume: 3"
                             onclick="addCheese();"
                             position="0 0.6 0" 
                             geometry="primitive:cylinder; radius:0.15; height:0.2;"
@@ -227,6 +230,7 @@
                 <a-entity   id="addPepperoniButton"
                             position="0.5 0 -1.5">
                     <a-entity class="button interactive" 
+                            sound="src:#plopSound; on: click; volume: 3"
                             onclick="addPepperoni();"
                             position="0 0.6 0" 
                             geometry="primitive:cylinder; radius:0.15; height:0.2;"
@@ -256,6 +260,7 @@
                 <a-entity   id="addOlivesButton"
                             position="1.5 0 -1.5">
                     <a-entity   class="button interactive" 
+                            sound="src:#plopSound; on: click; volume: 3"
                             onclick="addOlives();"
                             position="0 0.6 0" 
                             geometry="primitive:cylinder; radius:0.15; height:0.2;"
@@ -286,6 +291,7 @@
                 <a-entity   id="addHamButton"
                         position="-1.5 0 0.25">
                     <a-entity class="button interactive" 
+                            sound="src:#plopSound; on: click; volume: 3"
                             onclick="addHam();"
                             position="0 0.6 0" 
                             geometry="primitive:cylinder; radius:0.15; height:0.2;"
@@ -316,6 +322,7 @@
                 <a-entity   id="addPeppersButton"
                             position="-0.5 0 0.25">
                     <a-entity   class="button interactive" 
+                            sound="src:#plopSound; on: click; volume: 3"
                             onclick="addPepper();"
                             position="0 0.6 0" 
                             geometry="primitive:cylinder; radius:0.15; height:0.2;"
@@ -346,6 +353,7 @@
                 <a-entity   id="addMeatButton"
                             position="0.5 0 0.25" >
                     <a-entity   class="button interactive" 
+                            sound="src:#plopSound; on: click; volume: 3"        
                             onclick="addMeat();"
                             position="0 0.6 0"
                             geometry="primitive:cylinder; radius:0.15; height:0.2;"
@@ -377,6 +385,7 @@
                         position="1.5 0 0.25"
                         visible="false">
                 <a-entity class="button interactive" 
+                        sound="src:#plopSound; on: click; volume: 6"
                         onclick="makeNewPizza();"
                         position="0 0.6 0"
                         geometry="primitive:cylinder; radius:0.15; height:0.2;"
