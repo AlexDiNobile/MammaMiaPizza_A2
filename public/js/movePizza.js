@@ -4,9 +4,17 @@ function pizzaHold(){
         pizza.setAttribute("animation", "property: position; to: 10 0 0; dur: 2000; easing: linear;")
 
         let pizzacrust = document.querySelector('#crust');
-        pizzacrust.setAttribute("animation", "property:material.color; type:color; to:rgb(166,140,121); delay:2000; dur: 2000; easing: linear;")
+        pizzacrust.setAttribute("animation", "property:material.color; type:color; to:rgb(155, 110, 78); delay:2000; dur: 2000; easing: linear;")
         let pizzabase = document.querySelector('#pizzaBase');
-        pizzabase.setAttribute("animation", "property: material.color; type:color; to:rgb(183,163,147); delay:2000; dur: 2000; easing: linear;")
+        pizzabase.setAttribute("animation", "property: material.color; type:color; to:rgb(153, 128, 108); delay:2000; dur: 2000; easing: linear;")
+
+        let cheese = document.querySelector('#cheeseTopping');
+        console.log(cheese)
+        cheese.setAttribute("animation", "property: material.color; type:color; to:rgb(204, 139, 64); delay:2000; dur: 2000; easing: linear;")
+
+        let sauce = document.querySelector('#sauceTopping');
+        sauce.setAttribute("animation", "property: material.color; type:color; to:rgb(139, 37, 37); delay:2000; dur: 2000; easing: linear;")
+
         console.log(pizza.getAttribute('position').x);
         let pizzaSizzle = document.querySelector('#cookingSound');
 
@@ -36,9 +44,6 @@ function pizzaHold(){
     }
 
 }
-
-
-
 function pizzaDeliver(){
     let newPizzaButton = document.querySelector('#newPizzaButton');
     newPizzaButton.setAttribute('visible', true);
@@ -51,6 +56,12 @@ function pizzaDeliver(){
     let toppingPanel = document.querySelector('#toppingsPanel');
     toppingPanel.setAttribute('visible', true);
     toppingPanel.setAttribute('position', "-5 3.5 -7");
+
+    let cheese = document.querySelector('#cheeseTopping');
+    cheese.setAttribute("animation", "property: material.color; type:color; to:rgb(255, 255, 255); dur: 0; easing: linear;")
+
+    let sauce = document.querySelector('#sauceTopping');
+    sauce.setAttribute("animation", "property: material.color; type:color; to:rgb(166, 50, 50); dur: 0; easing: linear;")
 
     let pizzaDeliver = document.querySelector('#deliveryWindow');
     pizzaDeliver.setAttribute('position', "0 100 0");
@@ -101,11 +112,3 @@ function makeNewPizza(){
         meat[i].setAttribute('visible', false);
     }
 }
-
-//function pizzaHold(){
-    //FRAME.registerComponent('rotation-reader', {
-        //tick: function () {
-          //console.log(this.el.object3D.position);
-        //}
-      //});
-//}
