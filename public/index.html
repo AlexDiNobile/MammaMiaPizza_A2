@@ -5,14 +5,17 @@
         <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
         <script src="js/addToppings.js"></script>
         <script src="js/movePizza.js"></script>
+        <script src="js/teleportPads.js"></script>
         <link rel="stylesheet" href="css/user-gesture.css">
 
         <!--start expereience loader script-->
         <script>
+
             AFRAME.registerComponent('start-experience',{
                 init:function(){
                     console.log('sence loaded'); 
                     document.querySelector('#user-gesture-button').style.display='block';
+                    teleport('noTelePads');
                 }
             });
             //will be called when "enter experience" is clicked
@@ -31,12 +34,13 @@
         <!--Our user gesture html-->
         <div id="user-gesture-overlay">
             <div class="center">
-                <button id="user-gesture-button" onclick="startExperience();">Let's Make Some Pizza!</button>
+                <button id="user-gesture-button" onclick="startExperience()">Let's Make Some Pizza!</button>
             </div>
         </div>
         <a-scene start-experience>
             <a-assets timeout="20000">
-                <!--Load all assets here for A-Frame-->
+                <!--Load all A-frame Assets-->
+                <!--Photo assets-->
                 <img id="toppingCheese" src="assets/images/toppingCheese.png" crossorigin="anonymous"> <!--Important to make sure everything works add this for audio, video and image files-->
                 
                 <img id="woodTexture" src="assets/images/woodTexture.png" crossorigin="anonymous">
@@ -45,7 +49,7 @@
 
                 <img id="pizzaLogo" src="assets/images/pizzaLogo.png" crossorigin="anonymous">
                 
-                <!--A-asset-item is used for non-traditional html assets and respone-type flags that it should be loaded as a binary file-->
+                <!--Audio assets-->
                 <audio id="chillMusic" src="assets/sounds/chillMusic.mp3" preload="auto" crossorigin="anonymous"></audio>
                 <audio id="bellRing" src="assets/sounds/bellRing.mp3" preload="auto" crossorigin="anonymous"></audio>
                 <audio id="cookingSound" src="assets/sounds/cookingSound.mp3" preload="auto" crossorigin="anonymous"></audio>
@@ -418,8 +422,7 @@
     </a-entity>
             </a-entity>
             <!--Pizza-->
-            <a-entity
-                        id="pizza"
+            <a-entity   id="pizza"
                         visible="true">
                 <a-entity   id="pizzaBase"
                             onclick="pizzaHold(), logIt(pizza);"
@@ -871,7 +874,38 @@
                     </a-entity>
                 </a-entity>
             </a-entity>
+            <!--Enviroment-->
             <a-entity   environment="preset:default; dressing:towers; dressingAmount: 22; dressingScale: 70; dressingUniformScale: false; dressingColor: grey; groundTexture: walkernoise; groundColor: white; groundColor2: rgb(25,112,22); dressingVariance: 30 170 30; groundDensity: 64;">
+            </a-entity>
+            <!--Mobile Controls-->
+            <a-entity id="mobileControls">
+                <a-entity id="pizzaTelePad"
+                    class="button interactive"
+                    onclick="teleport('#pizzaTelePad');"
+                    position="-4.7 -0.1 0"
+                    geometry="primitive: cylinder; height: .3; radius: .7;"
+                    material="color:rgb(40,147,239); opacity: 0.5;"
+                    animation__mouseenter="property:material.color; type:color; to:rgb(163,213,239); startEvents:mouseenter; dur:200;"
+                    animation__mouseleave="property:material.color; type:color; to:rgb(40,147,239); startEvents:mouseleave; dur:200;">
+                </a-entity>
+                <a-entity id="ovenTelePad"
+                    class="button interactive"
+                    onclick="teleport('#ovenTelePad');"
+                    position="1.4 -0.1 0"
+                    geometry="primitive: cylinder; height: .3; radius: .7;"
+                    material="color:rgb(40,147,239); opacity: 0.5;"
+                    animation__mouseenter="property:material.color; type:color; to:rgb(163,213,239); startEvents:mouseenter; dur:200;"
+                    animation__mouseleave="property:material.color; type:color; to:rgb(40,147,239); startEvents:mouseleave; dur:200;">
+                </a-entity>
+                <a-entity id="windowTelePad"
+                    class="button interactive"
+                    onclick="teleport('#windowTelePad');"
+                    position="0 -0.1 4.4"
+                    geometry="primitive: cylinder; height: .3; radius: .7;"
+                    material="color:rgb(40,147,239); opacity: 0.5;"
+                    animation__mouseenter="property:material.color; type:color; to:rgb(163,213,239); startEvents:mouseenter; dur:200;"
+                    animation__mouseleave="property:material.color; type:color; to:rgb(40,147,239); startEvents:mouseleave; dur:200;">
+                </a-entity>
             </a-entity>
         </a-scene>
     </body>
