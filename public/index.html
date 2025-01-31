@@ -1,16 +1,18 @@
 <html>
     <head>
+        <!--Site Name-->
         <title>Mamma Mia's Pizzeria!</title>
+        <!--Load in all scripts-->
         <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
         <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
         <script src="js/addToppings.js"></script>
         <script src="js/movePizza.js"></script>
         <script src="js/teleportPads.js"></script>
+        <!--Load in style sheets-->
         <link rel="stylesheet" href="css/user-gesture.css">
 
         <!--start expereience loader script-->
         <script>
-
             AFRAME.registerComponent('start-experience',{
                 init:function(){
                     console.log('sence loaded'); 
@@ -22,7 +24,7 @@
             const startExperience = function(){
                 document.querySelector('#user-gesture-overlay').style.display='none';
           
-          //start all ambient music
+                //start background music
                 let ambientSounds = document.querySelector('#bg_music');
                 ambientSounds.play();
             };
@@ -31,7 +33,7 @@
     </head>
     <body>
 
-        <!--Our user gesture html-->
+        <!--user gesture html-->
         <div id="user-gesture-overlay">
             <div class="center">
                 <button id="user-gesture-button" onclick="startExperience()">Let's Make Some Pizza!</button>
@@ -39,9 +41,9 @@
         </div>
         <a-scene start-experience>
             <a-assets timeout="20000">
-                <!--Load all A-frame Assets-->
-                <!--Photo assets-->
-                <img id="toppingCheese" src="assets/images/toppingCheese.png" crossorigin="anonymous"> <!--Important to make sure everything works add this for audio, video and image files-->
+                <!--Loading all A-frame Assets-->
+                <!--Photo/Texture assets-->
+                <img id="toppingCheese" src="assets/images/toppingCheese.png" crossorigin="anonymous">
                 
                 <img id="woodTexture" src="assets/images/woodTexture.png" crossorigin="anonymous">
 
@@ -56,19 +58,21 @@
                 <audio id="plopSound" src="assets/sounds/plopSound.mp3" preload="auto" crossorigin="anonymous"></audio>
             </a-assets>
 
-            <!--Camera-->
+            <!--Player Camera View-->
             <a-entity   id="mainCam"
                         position="0 2 0"
                         camera wasd-controls look-controls>
                             <a-entity   cursor="rayOrigin:mouse" 
                                         raycaster="far:10; interval:200; objects:.interactive;" >
+                                    <!--Pizza Box in player's hand-->
                                     <a-entity   id="pizzaBox"
                                                 visible="false"
                                                 position="0 -1 -2.0;"
                                                 geometry="primitive: box; height: 1.5; width: 1.5; depth: 0.15;"
                                                 rotation="90 0 0;"
                                                 material="color: white;">
-                                                <a-entity   id="pizzaBox"
+                                                <!--Pizza Box Logo-->
+                                                <a-entity   id="pizzaBoxLogo"
                                                     geometry="primitive: plane; height: 1.5; width: 1.5"
                                                     rotation="180 0 0;"
                                                     position="0 0 -0.076;"
@@ -91,42 +95,49 @@
                 rotation="0 90 0"
                 geometry="primitive:box; width:8; height:1; depth:4"
                 material="color:grey; roughness: 0.8; metalness: 0.7;">
+                <!--Oven Wall-->
                 <a-entity   class="ovenWall"
                     position="3.945 0.4 0.0"
                     rotation="0 0 90"
                     geometry="primitive:box; width:2; height:0.1; depth:4"
                     material="color:grey; roughness: 0.8; metalness: 0.7;">
                 </a-entity>
+                <!--Oven Wall-->
                 <a-entity   class="ovenWall"
                     position="2 0.4 2"
                     rotation="0 90 90"
                     geometry="primitive:box; width:2; height:0.1; depth:4"
                     material="color:grey; roughness: 0.8; metalness: 0.7;">
                 </a-entity>
+                <!--Top of Oven-->
                 <a-entity   id="ovenTop"
                     position="2.0 1.6 0"
                     rotation="0 90 0"
                     geometry="primitive:box; width:4; height:0.5; depth:4"
                     material="color:grey; roughness: 0.8; metalness: 0.7;">
                 </a-entity>
+                <!--Oven Corner-->
                 <a-entity   class="ovenCorner"
                     position="0.1 -0.16 -1.9"
                     rotation="90 0 0"
                     geometry="primitive:box; width:0.2; height:0.2; depth:4"
                     material="color:grey; roughness: 0.8; metalness: 0.7;">
                 </a-entity>
+                <!--Oven Heat Elements-->
                 <a-entity   class="ovenHeater"
                     position="2.0 1.4 -1"
                     rotation="0 0 90"
                     geometry="primitive: cylinder; height: 3; radius: 0.2"
                     material="emissive:orange; emissiveIntensity: 1;">
                 </a-entity>
+                <!--Oven Heat Elements-->
                 <a-entity   class="ovenHeater"
                     position="2.0 1.4 0"
                     rotation="0 0 90"
                     geometry="primitive: cylinder; height: 3; radius: 0.2"
                     material="emissive:orange; emissiveIntensity: 1;">
                 </a-entity>
+                <!--Oven Heat Elements-->
                 <a-entity   class="ovenHeater"
                     position="2.0 1.4 1"
                     rotation="0 0 90"
@@ -135,27 +146,31 @@
                 </a-entity>
             </a-entity>
             <!--Pizza Table-->
+            <!--Pizza Top-->
             <a-entity   id="pizzaTable"
                         position="-5 0.5 -4"
                         rotation="90 0 0"
                         geometry="primitive:box; width:3.2; height:3.2; depth:0.2"
                         material="color:rgb(60,36,16)">
-                        <!--Chair Legs-->
+                        <!--Table Legs 1-->
                         <a-entity
                             position="-1.4 1.4 0.45"
                             geometry="primitive:box; width:0.2; height:0.2; depth:1"
                             material="color:rgb(60,36,16)">
                         </a-entity>
+                        <!--Table Legs 2-->
                         <a-entity
                             position="1.4 1.4 0.45"
                             geometry="primitive:box; width:0.2; height:0.2; depth:1"
                             material="color:rgb(60,36,16)">
                         </a-entity>
+                        <!--Table Legs 3-->
                         <a-entity
                             position="1.4 -1.4 0.45"
                             geometry="primitive:box; width:0.2; height:0.2; depth:1"
                             material="color:rgb(60,36,16)">
                         </a-entity>
+                        <!--Table Legs 4-->
                         <a-entity
                             position="-1.4 -1.4 0.45"
                             geometry="primitive:box; width:0.2; height:0.2; depth:1"
@@ -168,6 +183,7 @@
                         rotation="90 0 0"
                         geometry="primitive:box; width: 4; height: 0.2; depth:4"
                         material="color:rgb(54,69,79)">
+                <!--Sauce Menu Button-->
                 <a-entity   id="addSauceButton"
                         position="-1.5 0 -1.5">
                     <a-entity class="button interactive" 
@@ -181,23 +197,27 @@
                             animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
                             animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
                     </a-entity>
+                    <!--Button stands-->
                     <a-entity   class="pedestal" 
                             position="0 0.3 0" 
                             geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
                             material="color:rgb(54,69,79);">
                     </a-entity>
+                    <!--Sauce Menu icon-->
                     <a-entity
                         id="sauceMenu"
                         position="0 0.115 0.7"
                         geometry="primitive: sphere; radius: 0.2"
                         material="color:brown">
                     </a-entity>
+                    <!--Sauce Menu text-->
                     <a-text
                             rotation="270 0 0"
                             position="0.35 0.115 0.85"
                             text="value:Sauce; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
                     </a-text>  
                 </a-entity>
+                <!--Cheese Menu Button-->
                 <a-entity   id="addCheeseButton"
                             position="-0.5 0 -1.5">
                     <a-entity   class="button interactive" 
@@ -211,23 +231,27 @@
                             animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
                             animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
                     </a-entity>
+                    <!--Button stands-->
                     <a-entity   class="pedestal" 
                             position="0 0.3 0" 
                             geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
                             material="color:rgb(54,69,79);">
                     </a-entity>
+                    <!--Cheese Menu icon-->
                     <a-entity
                         id="cheeseMenu"
                         position="0 0.115 0.7"
                         geometry="primitive: sphere; radius: 0.2"
                         material="color:rgb(248, 230, 159)">
                     </a-entity> 
+                    <!--Cheese Menu text-->
                     <a-text
                         rotation="270 0 0"
                         position="0.33 0.115 0.85"
                         text="value:Cheese; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
                     </a-text>   
                 </a-entity>
+                <!--Pepperoni Menu Button-->
                 <a-entity   id="addPepperoniButton"
                             position="0.5 0 -1.5">
                     <a-entity class="button interactive" 
@@ -241,23 +265,27 @@
                             animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
                             animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
                     </a-entity>
+                    <!--Button stands-->
                     <a-entity   class="pedestal" 
                             position="0 0.3 0" 
                             geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
                             material="color:rgb(54,69,79);">
                     </a-entity>
+                    <!--Pepperoni Menu icon-->
                     <a-entity
                             id="pepperoniToppingMenu"
                             position="0 0.115 0.7"
                             geometry="primitive: cylinder; height: 0.03; radius: 0.2;"
                             material="color:rgb(127,50,34)">
                     </a-entity>
+                    <!--Pepperoni Menu Text-->
                     <a-text
                         rotation="270 0 0"
                         position="0.235 0.115 0.85"
                         text="value:Pepperoni; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
                     </a-text>  
                 </a-entity>
+                <!--Olive Menu Button-->
                 <a-entity   id="addOlivesButton"
                             position="1.5 0 -1.5">
                     <a-entity   class="button interactive" 
@@ -271,11 +299,13 @@
                             animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
                             animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
                     </a-entity>
+                    <!--Button stands-->
                     <a-entity   class="pedestal" 
                             position="0 0.3 0" 
                             geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
                             material="color:rgb(54,69,79);">
                     </a-entity>
+                    <!--Olive Menu icon-->
                     <a-entity
                         id="olivesToppingMenu"
                         position="0 0.115 0.7"
@@ -283,12 +313,14 @@
                         geometry="primitive: torus; radius: 0.05; radiusTubular: 0.01; arc: 360"
                         material="color:black">
                     </a-entity>
+                    <!--Olive Menu Text-->
                     <a-text
                         rotation="270 0 0"
                         position="0.4 0.115 0.85"
                         text="value:Olives; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
                     </a-text>   
                 </a-entity>
+                <!--Ham Menu Button-->
                 <a-entity   id="addHamButton"
                         position="-1.5 0 0.25">
                     <a-entity class="button interactive" 
@@ -302,11 +334,13 @@
                             animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
                             animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
                     </a-entity>
+                    <!--Button stands-->
                     <a-entity   class="pedestal" 
                             position="0 0.3 0" 
                             geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
                             material="color:rgb(54,69,79);">
                     </a-entity>
+                    <!--Ham Menu icon-->
                     <a-entity
                         id="hamToppingMenu"
                         position="0 0.115 0.7"
@@ -314,12 +348,14 @@
                         geometry="primitive: box; width: 0.1; height: 0.24; depth: 0.02;"
                         material="color:rgb(255,156,156)">
                     </a-entity>
+                    <!--Ham Menu Text-->
                     <a-text
                         rotation="270 0 0"
                         position="0.423 0.115 0.85"
                         text="value:Ham; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
                     </a-text>   
                 </a-entity>
+                <!--Add Pepper Menu Button-->
                 <a-entity   id="addPeppersButton"
                             position="-0.5 0 0.25">
                     <a-entity   class="button interactive" 
@@ -333,11 +369,13 @@
                             animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
                             animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
                     </a-entity>
+                    <!--Button stands-->
                     <a-entity   class="pedestal" 
                             position="0 0.3 0" 
                             geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
                             material="color:rgb(54,69,79);">
                     </a-entity>
+                    <!--Pepper Menu icon-->
                     <a-entity
                         id="pepperToppingMenu"
                         position="-0.15 0.110 0.8"
@@ -345,12 +383,14 @@
                         geometry="primitive: torus; radius: 0.3; radiusTubular: 0.02; arc: 90;"
                         material="color:rgb(137,180,63)">
                     </a-entity> 
+                    <!--Pepper Menu Text-->
                     <a-text
                         rotation="270 0 0"
                         position="0.277 0.115 0.85"
                         text="value:Peppers; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
                     </a-text>    
                 </a-entity>
+                <!--Add meat Menu Button-->
                 <a-entity   id="addMeatButton"
                             position="0.5 0 0.25" >
                     <a-entity   class="button interactive" 
@@ -364,11 +404,13 @@
                             animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
                             animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
                     </a-entity>
+                    <!--Button stands-->
                     <a-entity   class="pedestal" 
                             position="0 0.3 0" 
                             geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
                             material="color:rgb(54,69,79);">
                     </a-entity>
+                    <!--Meat Menu icon-->
                     <a-entity
                         id="meatToppingMenu"
                         position="0 0.115 0.7"
@@ -376,16 +418,18 @@
                         geometry="primitive: sphere; radius: 0.1"
                         material="color:rgb(100,30,24)">
                     </a-entity>
+                    <!--Meat Menu Text-->
                     <a-text
                         rotation="270 0 0"
                         position="0.285 0.115 0.85"
                         text="value:Meatball; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
                     </a-text>    
                 </a-entity>
+                <!--New Pizza Menu Button-->
                 <a-entity   id="newPizzaButton"
                         position="1.5 0 0.25"
                         visible="false">
-                <a-entity class="button interactive" 
+                    <a-entity class="button interactive" 
                         sound="src:#plopSound; on: click; volume: 6"
                         onclick="makeNewPizza();"
                         position="0 0.6 0"
@@ -395,42 +439,47 @@
                         animation__mouseleave="property:material.color; type:color; to:rgb(255,100,100); startEvents:mouseleave; dur:200;"
                         animation__clickdown="property:position.y; from:0.6; to:0.55; startEvents:mousedown; dur:100;"
                         animation__clickup="property:position.y; from:0.55; to:0.6; startEvents:mouseup; dur:300;">
+                    </a-entity>
+                <!--New Pizza Icon-->
+                    <a-entity   id="pizzaBaseMenu"
+                        geometry="primitive:cylinder; height: 0.2; radius: 0.2;"
+                        material="color:rgb(244,217,196)"
+                        position="0 0.019 0.7">
+                    </a-entity>
+                    <a-entity id="pizzaCrustMenu"
+                        geometry="primitive: torus; radius: 0.2; radiusTubular: 0.01; arc: 360;"
+                        material="color:rgb(206,174,149)"
+                        position="0 0.115 0.7"
+                        rotation="90 0 0">
+                    </a-entity>
+                    <!--New Pizza Menu text-->
+                    <a-text
+                        rotation="270 0 0"
+                        position="0.15 0.115 0.85"
+                        text="value:New Pizza; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
+                    </a-text>  
+                    <!--Button stands-->
+                    <a-entity   class="pedestal" 
+                        position="0 0.3 0" 
+                        geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
+                        material="color:rgb(54,69,79);">
+                    </a-entity>  
                 </a-entity>
-                <a-entity   id="pizzaBaseMenu"
-                    geometry="primitive:cylinder; height: 0.2; radius: 0.2;"
-                    material="color:rgb(244,217,196)"
-                    position="0 0.019 0.7">
-                </a-entity>
-            <!--Crust-->
-                <a-entity id="pizzaCrustMenu"
-                    geometry="primitive: torus; radius: 0.2; radiusTubular: 0.01; arc: 360;"
-                    material="color:rgb(206,174,149)"
-                    position="0 0.115 0.7"
-                    rotation="90 0 0">
-                </a-entity>
-                <a-text
-                    rotation="270 0 0"
-                    position="0.15 0.115 0.85"
-                    text="value:New Pizza; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
-                </a-text>  
-                <a-entity   class="pedestal" 
-                    position="0 0.3 0" 
-                    geometry="primitive:box; width:0.5; depth:0.5; height:0.6;" 
-                    material="color:rgb(54,69,79);">
-                </a-entity>
-                
-    </a-entity>
             </a-entity>
             <!--Pizza-->
             <a-entity   id="pizza"
                         visible="true">
+                <!--Pizza Base-->
                 <a-entity   id="pizzaBase"
-                            onclick="pizzaHold(), logIt(pizza);"
+                            onclick="pizzaHold();"
                             class="button interactive"
                             position="-5 0.6 -4"
                             geometry="primitive:cylinder; height: 0.025; radius: 1.4;"
                             material="color:rgb(244,217,196)">
-                        <!--Crust-->
+
+
+
+                        <!--Pizza Crust-->
                         <a-entity
                             id="crust"
                             position="0 0.06 0"
@@ -438,6 +487,9 @@
                             geometry="primitive: torus; radius: 1.4; radiusTubular: 0.05; arc: 360;"
                             material="color:rgb(206,174,149)">
                         </a-entity>
+
+
+
                         <!--Toppings-->
                         <!--Sauce-->
                         <a-entity
@@ -447,6 +499,9 @@
                             material="color:rgb(166, 50, 50)"
                             visible="false">
                         </a-entity>
+
+
+
                         <!--Cheese-->
                         <a-image
                             id="cheeseTopping"
@@ -456,6 +511,9 @@
                             material="src:#toppingCheese"
                             visible="false">
                         </a-image>
+
+
+
                         <!--Pepperoni (7)-->
                         <a-entity
                             class="pepperoniTopping"
@@ -506,6 +564,9 @@
                             material="color:rgb(127,50,34)"
                             visible="false">
                         </a-entity>  
+
+
+                        
                         <!--Olives (10)--> 
                         <a-entity
                             class="olivesTopping"
@@ -587,6 +648,9 @@
                             material="color:black"
                             visible="false">
                         </a-entity>  
+
+
+
                         <!--Ham (9)--> 
                         <a-entity
                             class="hamTopping"
@@ -660,6 +724,9 @@
                             material="color:rgb(255,156,156)"
                             visible="false">
                         </a-entity> 
+
+
+
                         <!--Green Peppers (7)-->  
                         <a-entity
                             class="pepperTopping"
@@ -717,6 +784,9 @@
                             material="color:rgb(137,180,63)"
                             visible="false">
                         </a-entity>  
+
+
+
                         <!--Meat (10)--> 
                         <a-entity
                             class="meatTopping"
@@ -802,60 +872,72 @@
             </a-entity>
             <!--Room-->
             <a-entity   id="room;">
+                <!--Ceiling-->
                 <a-entity   id="ceiling" 
                             position="0 9 0" 
                             rotation="-270 0 0" 
                             geometry="primitive:plane; width:14; height:14;" 
                             material="src:#woodTexture;">
                 </a-entity>
+                <!--Floor-->
                 <a-entity   id="floor" 
                             position="0 0.01 0" 
                             rotation="-90 0 0" 
                             geometry="primitive:plane; width:14; height:14;" 
                             material="src:#woodTexture;">
                 </a-entity>
+                <!--Walls-->
                 <a-entity id="walls">
+                    <!--Wall 1-->
                     <a-entity   class="wall" 
                                 position="7 4 0" 
                                 rotation="0 -90 0" 
                                 geometry="primitive:plane; width:14; height:10;" 
                                 material="src:#brickTexture;">
                     </a-entity>
+                    <!--Wall 2-->
                     <a-entity   class="wall" 
                                 position="-7 4 0" 
                                 rotation="0 90 0" 
                                 geometry="primitive:plane; width:14; height:10;" 
                                 material="src:#brickTexture;">
                     </a-entity>
+                    <!--Wall 3-->
                     <a-entity   class="wall" 
                                 position="0 4 -7" 
                                 rotation="0 0 0" 
                                 geometry="primitive:plane; width:14; height:10;" 
                                 material="src:#brickTexture;">
                     </a-entity>
+                    <!--Wall deliveryWall (Wall 4)-->
                     <a-entity   id="deliveryWall" 
                                 position="0 4 7">
+                        <!--deliveryWall part-->
                         <a-entity   id="wall" 
                                     position="4.5 0 0"
                                     geometry="primitive: box; height: 10; width: 5; depth: 0.15;" 
                                     material="color:rgb(132, 34, 34);">
                         </a-entity>
+                        <!--deliveryWall part-->
                         <a-entity   id="wall" 
                                     position="-4.5 0 0"
                                     geometry="primitive: box; height: 10; width: 5; depth: 0.15;" 
                                     material="color:rgb(132, 34, 34);">
                         </a-entity>
+                        <!--deliveryWall part-->
                         <a-entity   id="wall" 
                                     position="0 3 0"
                                     geometry="primitive: box; height: 7; width: 5; depth: 0.15;" 
                                     material="color:rgb(132, 34, 34);"
                                     text="value:Delivery Window; color:white; font:mozillavr; width: 1.3; anchor:center; baseline:top; wrapCount:12;">
                         </a-entity>
+                        <!--deliveryWall text-->
                         <a-entity 
                                     position="-0.46 1 -0.2"
                                     rotation="0 180 0"
                                     text="value:Delivery Window; color:white; font:mozillavr; width: 3; anchor:center; baseline:top; wrapCount:9;">
                         </a-entity>
+                        <!--deliveryWall part-->
                         <a-entity   id="wall" 
                                     position="0 -4 0"
                                     geometry="primitive: box; height: 2; width: 5; depth: 0.15;" 
@@ -875,10 +957,12 @@
                 </a-entity>
             </a-entity>
             <!--Enviroment-->
-            <a-entity   environment="preset:default; dressing:towers; dressingAmount: 22; dressingScale: 70; dressingUniformScale: false; dressingColor: grey; groundTexture: walkernoise; groundColor: white; groundColor2: rgb(25,112,22); dressingVariance: 30 170 30; groundDensity: 64;">
+            <a-entity   id="Environment;"
+                environment="preset:default; dressing:towers; dressingAmount: 22; dressingScale: 70; dressingUniformScale: false; dressingColor: grey; groundTexture: walkernoise; groundColor: white; groundColor2: rgb(25,112,22); dressingVariance: 30 170 30; groundDensity: 64;">
             </a-entity>
             <!--Mobile Controls-->
             <a-entity id="mobileControls">
+                <!--Teleport Pad for the Pizza-->
                 <a-entity id="pizzaTelePad"
                     class="button interactive"
                     onclick="teleport('#pizzaTelePad');"
@@ -888,6 +972,7 @@
                     animation__mouseenter="property:material.color; type:color; to:rgb(163,213,239); startEvents:mouseenter; dur:200;"
                     animation__mouseleave="property:material.color; type:color; to:rgb(40,147,239); startEvents:mouseleave; dur:200;">
                 </a-entity>
+                <!--Teleport Pad for the Oven-->
                 <a-entity id="ovenTelePad"
                     class="button interactive"
                     onclick="teleport('#ovenTelePad');"
@@ -897,6 +982,7 @@
                     animation__mouseenter="property:material.color; type:color; to:rgb(163,213,239); startEvents:mouseenter; dur:200;"
                     animation__mouseleave="property:material.color; type:color; to:rgb(40,147,239); startEvents:mouseleave; dur:200;">
                 </a-entity>
+                <!--Teleport Pad for the Delivery Window-->
                 <a-entity id="windowTelePad"
                     class="button interactive"
                     onclick="teleport('#windowTelePad');"
