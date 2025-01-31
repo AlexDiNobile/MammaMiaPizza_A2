@@ -15,13 +15,12 @@ function pizzaHold(){
         let sauce = document.querySelector('#sauceTopping');
         sauce.setAttribute("animation", "property: material.color; type:color; to:rgb(139, 37, 37); delay:2000; dur: 2000; easing: linear;")
 
-        console.log(pizza.getAttribute('position').x);
-        let pizzaSizzle = document.querySelector('#cookingSound');
 
         let toppingPanel = document.querySelector('#toppingsPanel');
         toppingPanel.setAttribute('visible', false);
         toppingPanel.setAttribute('position', "-5 3.5 100");
 
+        let pizzaSizzle = document.querySelector('#cookingSound');
         setTimeout(function() {
             pizzaSizzle.play();
           }, 2000);
